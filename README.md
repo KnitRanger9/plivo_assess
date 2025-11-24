@@ -275,6 +275,71 @@ python src/measure_latency.py \
   --runs 50
 ```
 
+## Usage examples for modified training methods:
+```bash
+# Baseline (No new features)
+ src/train.py \
+  --model_name distilbert-base-uncased \
+  --train data/train.jsonl \
+  --dev data/dev.jsonl \
+  --out_dir out_baseline \
+  --epochs 5
+
+# With Class Weighting
+bashpython src/train.py \
+  --model_name distilbert-base-uncased \
+  --train data/train.jsonl \
+  --dev data/dev.jsonl \
+  --out_dir out_weighted \
+  --epochs 5 \
+  --use_class_weights
+
+# With Focal Loss
+bashpython src/train.py \
+  --model_name distilbert-base-uncased \
+  --train data/train.jsonl \
+  --dev data/dev.jsonl \
+  --out_dir out_focal \
+  --epochs 5 \
+  --use_focal_loss \
+  --focal_gamma 2.0
+
+# With Cosine Annealing + Warmup
+bashpython src/train.py \
+  --model_name distilroberta-base \
+  --train data/train.jsonl \
+  --dev data/dev.jsonl \
+  --out_dir out_cosine \
+  --epochs 5 \
+  --use_cosine_scheduler \
+  --warmup_ratio 0.15
+
+# With CRF
+ src/train.py \
+  --model_name distilroberta-base \
+  --train data/train.jsonl \
+  --dev data/dev.jsonl \
+  --out_dir out_crf \
+  --epochs 5 \
+  --use_crf
+
+#All Combined (Best)
+ src/train.py \
+  --model_name distilroberta-base \
+  --train data/train.jsonl \
+  --dev data/dev.jsonl \
+  --out_dir out_best \
+  --epochs 5 \
+  --batch_size 16 \
+  --lr 2e-5 \
+  --use_class_weights \
+  --use_focal_loss \
+  --focal_gamma 2.0 \
+  --use_cosine_scheduler \
+  --warmup_ratio 0.15 \
+  --use_crf
+```
+
 ## Notes
 
 - The model uses learned sequence labeling (not regex-based) as the primary detection method
